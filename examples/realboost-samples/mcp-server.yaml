@@ -1,0 +1,13 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: sample-mcp-server
+  namespace: kgateway-system
+spec:
+  mcp:
+    targets:
+    - name: weather-mcp-target
+      static:
+        host: weather-mcp.default.svc.cluster.local
+        port: 8080
+        protocol: SSE

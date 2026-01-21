@@ -1,0 +1,32 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: sample-a2a-agent
+  namespace: kgateway-system
+spec:
+  # A2A Agents often effectively interface as specialized LLM clients
+  ai:
+    llm:
+      openai:
+        model: "gpt-4-turbo"
+      # If the agent is a hosted service, you might use static backend instead
+      # but for "A2A" we often mean the Agent *Gateway* acting as the agent.
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: a2a-agent-route
+  namespace: kgateway-system
+spec:
+  parentRefs:
+  - name: ai-gateway
+    namespace: kgateway-system
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /agent/v1/chat
+    backendRefs:
+    - name: sample-a2a-agent
+      group: agentgateway.dev
+      kind: AgentgatewayBackend

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agentgateway-ui
+  namespace: kgateway-system
+  labels:
+    app: agentgateway-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agentgateway-ui
+  template:
+    metadata:
+      labels:
+        app: agentgateway-ui
+    spec:
+      containers:
+      - name: ui
+        image: agentgateway-ui:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentgateway-ui
+  namespace: kgateway-system
+spec:
+  selector:
+    app: agentgateway-ui
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http

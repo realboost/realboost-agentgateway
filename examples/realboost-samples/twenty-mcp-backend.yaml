@@ -1,0 +1,13 @@
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: twenty-mcp-backend
+  namespace: default
+spec:
+  mcp:
+    targets:
+    - name: twenty-target
+      static:
+        host: twenty-crm-mcp-server-service.default.svc.cluster.local
+        port: 80
+        protocol: SSE
